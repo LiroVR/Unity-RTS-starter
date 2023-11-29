@@ -23,6 +23,13 @@ public class Commander : MonoBehaviour
     public void Attack(Ray camToWorldRay)
     {
         Debug.DrawRay(camToWorldRay.origin, camToWorldRay.direction * 100, Color.red,1);
+        if(!Physics.Raycast(camToWorldRay, out RaycastHit hitObject, 100, StaticUtilities.AttackLayers)) return;
+
+        Vector3 normalizedHitPoint = hitObject.point.normalized;
+        foreach (Monster monster in controlledMonsters)
+        {
+            monster.TryAttack(hitObject, normalizedHitPoint);
+        }
     }
 
     public void MoveTo(Ray camToWorldRay)
